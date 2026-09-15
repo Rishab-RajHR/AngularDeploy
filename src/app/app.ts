@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { Review, ReviewService } from './review-service';
 
 @Component({
   imports: [],
@@ -7,14 +8,40 @@ import { Component, signal } from '@angular/core';
   templateUrl: './app.html',
 })
 export class App {
-    selectedColor = signal('#3498db');
+    reviews: Review[] = []
+    currentIndex = signal(0);
+    loading = signal(true);
 
-    onColorChange(newColor: string) {
-        this.selectedColor.set(newColor);
+    constructor(private reviewService:ReviewService) {}
+
+    ngOnInit(){
+      this.reviewService.getReviews().subscribe((data) => {
+          this.reviews = data;
+          this.loading.set(false);
+      })
     }
 
-    copyColor(){
-       navigator.clipboard.writeText(this.selectedColor());
-       alert('Color Copied: ' + this.selectedColor());
+    get currentReview(): Review | null {
+       return this.reviews.length ? this.reviews[this.currentIndex()] : null ;
+    }
+
+    nextReview(){
+       let index = this.currentIndex() + 1;
+       if(index >= this.reviews.length) {
+          index = 0;
+       }
+       this.currentIndex.set(index);
+    }
+
+     previousReview(){
+      let index = this.currentIndex() - 1;
+      if(index < 0){
+         index = this.reviews.length - 1;
+      }
+      this.currentIndex.set(index);
+    }
+    randomReview(){
+       let index = Math.floor(Math.random() * this.reviews.length);
+       this.currentIndex.set(index);
     }
 }
