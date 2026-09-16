@@ -1,4 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { decrement, increment, reset } from './store/counter.actions';
 
 @Component({
   imports: [],
@@ -7,6 +9,17 @@ import { Component, signal } from '@angular/core';
   templateUrl: './app.html',
 })
 export class App {
-   count = 0;
-   user = [];
+   constructor(private store:Store){}
+
+   inc(){
+     this.store.dispatch(increment());
+   }
+
+   dec(){
+     this.store.dispatch(decrement());
+   }
+
+   resetCount(){
+      this.store.dispatch(reset());
+   }
 }
