@@ -2,9 +2,9 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
-import { counterReducer } from './store/counter.reducer';
+import { reducer } from './store/counter.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideBrowserGlobalErrorListeners(), provideRouter(routes),
-  provideStore({counter: counterReducer})],
+  provideStore({counter: reducer})],
 };
