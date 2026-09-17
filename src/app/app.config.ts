@@ -1,10 +1,13 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideStore } from '@ngrx/store';
-import { reducer } from './store/counter.reducer';
+import { provideState, provideStore } from '@ngrx/store';
+import { formFeature } from './form/form.feature';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [provideBrowserGlobalErrorListeners(), provideRouter(routes),
-  provideStore({counter: reducer})],
+  provideStore(),
+  provideState(formFeature)
+]
 };

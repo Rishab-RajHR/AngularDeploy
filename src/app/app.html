@@ -1,7 +1,28 @@
-<h2>NgRx Counter App</h2>
+<h2>NgRx with Forms</h2>
 
-<h2>Counter : {{counter$ | async}}</h2>
+@if (form$ | async; as form)  {
+    <input
+        type="text"
+        placeholder="Enter Name"
+        [value]="form.name"
+        (input)="updatedField('name', $event.target.value)"
+    />
 
-<button (click)="inc()">+</button>
-<button (click)="dec()">-</button>
-<button (click)="resetCount()">reset</button>
+    <br /> <br />
+
+    <input
+       type="email"
+       placeholder="Enter Email"
+       [value]="form.email"
+       (input)="updatedField('email', $event.target.value)"
+    />
+
+    <br /> <br />
+
+    <button (click)="resetForm()">Reset Form</button>
+
+    <hr />
+
+    <h4>Form Preview</h4>
+    <pre>{{ form | json }}</pre>
+}
