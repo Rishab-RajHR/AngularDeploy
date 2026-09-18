@@ -1,28 +1,19 @@
-<h2>NgRx with Forms</h2>
+<h1>NgRx Effects</h1>
 
-@if (form$ | async; as form)  {
-    <input
-        type="text"
-        placeholder="Enter Name"
-        [value]="form.name"
-        (input)="updatedField('name', $event.target.value)"
-    />
+<button (click)="load()">Load Data</button>
 
-    <br /> <br />
+@if (users$ | async; as state) {
+    @if (state.loading) {
+        <p>Loading...</p>
+    }
 
-    <input
-       type="email"
-       placeholder="Enter Email"
-       [value]="form.email"
-       (input)="updatedField('email', $event.target.value)"
-    />
+    @if (state.error) {
+       <p>Error: {{ state.error }}</p>
+    }
 
-    <br /> <br />
-
-    <button (click)="resetForm()">Reset Form</button>
-
-    <hr />
-
-    <h4>Form Preview</h4>
-    <pre>{{ form | json }}</pre>
+    <ul>
+        @for (user of state.users; track user.id) {
+           <li>{{ user.name }} - {{ user.email }}</li>
+        }
+    </ul>
 }

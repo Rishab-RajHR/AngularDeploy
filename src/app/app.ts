@@ -1,32 +1,27 @@
-import { Component, inject} from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { formFeature } from './form/form.feature';
-import { resetForm, updateFormField } from './form/form.actions';
+import { Component, inject} from '@angular/core';
+import { Observable } from 'rxjs';
+import { userFeature } from './users/user.feature';
+import { Store } from '@ngrx/store';
+import { loadUsers } from './users/user.actions';
 
 @Component({
   imports: [CommonModule],
+  standalone: true,
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
 export class App {
-  // form$ : Observable<{ name: string; email: string }>;
+   users$! : Observable<any>;
 
-  // constructor( private store: Store) {
-  //     this.form$ = this.store.select(formFeature.selectFormState);
-  // }
+   constructor(private store:Store) {
+      this.users$ = this.store.select(
+          userFeature.selectUserState
+      );
+   }
 
-  private store = inject(Store);
-
-  form$ = this.store.select(formFeature.selectFormState);
-
-  updatedField(field: 'name' | 'email', value: string) {
-     this.store.dispatch( updateFormField({ field, value }));
-  }
-
-  resetForm() {
-     this.store.dispatch(resetForm())
-  }
+   load(){
+      this.store.dispatch(loadUsers());
+   }
 }
